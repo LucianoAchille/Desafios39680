@@ -1,34 +1,21 @@
 import express from "express";
-import ProductManager from "./components/ProductManager.js";
+import ProductRouter from "./routes/product.router.js";
+import CartRouter from "./routes/cart.router.js";
 
 const app = express();
-app.use(express.urlencoded({extended:true}));
-
-const products = new ProductManager();
-const readProducts = products.readProducts();
-//console.log(await readProducts)
-app.get("/products",async (req,res)=>{
-    let limit = parseInt(req.query.limit);
-    console.log(limit)
-    if (!limit) return res.send(await readProducts)
-    else{
-        let allProducts= await readProducts
-        let productLimit= allProducts.slice(0,limit)
-        
-        res.send(productLimit)
-    }
-})
-
-app.get("/products/:id",async (req,res)=>{
-    let id= parseInt(req.params.id)
-    //console.log(id)
-    let allProducts= await readProducts;
-    let productById= allProducts.find(product=> product.id === id)
-    res.send(productById)
-})
-
-
 const PORT = 8080;
+
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
+
+app.use("/api/products",ProductRouter)
+app.use('/api/carts', CartRouter)
+
+//const readProducts = products.readProducts();
+//console.log(await readProducts)
+
+
+
 const server = app.listen(PORT,()=>{
     console.log(`Express en puerto ${server.address().port}`)
 })

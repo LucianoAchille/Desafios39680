@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 
 export default class CartManager{
     constructor(){
-        this.path="./src/models/cart.json";
+        this.path="../src/models/cart.json";
         this.cart = []
     }
 
@@ -23,7 +23,7 @@ export default class CartManager{
     }
     
     addCart = async (cart)=>{
-        let cartOld = await this.readProducts();
+        let cartOld = await this.readCarts();
         let id = nanoid();
         let cartConcat = [{id:id, cart: []}, ...cartOld]
         await this.writeCarts(cartConcat);
@@ -33,7 +33,7 @@ export default class CartManager{
     getCartById = async(id)=>{
         
         let cart = await this.exist(id);
-        if(!cart) console.log(`CArrito ${id} no existe`)
+        if(!cart) console.log(`Carrito ${id} no existe`)
         else {  //console.log(product);
                 return cart}
     }

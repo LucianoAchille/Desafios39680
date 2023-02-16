@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 
 export default class ProductManager {
     constructor(){
-        this.path="./src/models/products.json";
+        this.path="../src/models/products.json";
         this.products = []
     }
 
@@ -27,7 +27,6 @@ export default class ProductManager {
         //     id: ProductManager.id,
         //     status,
         //     category
-
         // }
         let productsOld = await this.readProducts();
         product.id= nanoid();

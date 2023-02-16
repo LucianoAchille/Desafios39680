@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CartManager from "../controllers/CartManager";
+import CartManager from "../controllers/CartManager.js";
 
 const CartRouter = Router();
 
@@ -15,7 +15,6 @@ CartRouter.get('/',async (req,res)=>{
 
 CartRouter.get('/:id',async (req,res)=>{
     res.send(await cart.getCartById(req.params.id))
-    
 })
 
 

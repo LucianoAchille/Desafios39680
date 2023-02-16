@@ -1,10 +1,10 @@
+import { Console } from 'console';
 import {copyFile, promises as fs} from 'fs';
-import { nanoid } from 'nanoid';
-
+//import { nanoid } from 'nanoid';
 
 export default class ProductManager {
     constructor(){
-        this.path="../src/models/products.json";
+        this.path="./src/models/products.json";
         this.products = []
     }
 
@@ -15,24 +15,14 @@ export default class ProductManager {
     }
 
     addProduct = async (product)=>{
-        //title,description,price,image,code,stock,status,category
-        // ProductManager.id++;
-        // let newProduct ={
-        //     title,
-        //     description,
-        //     price,
-        //     image,
-        //     code,
-        //     stock,
-        //     id: ProductManager.id,
-        //     status,
-        //     category
-        // }
+        
+        ProductManager.id++;
+        //console.log(ProductManager.id)    ;   
         let productsOld = await this.readProducts();
-        product.id= nanoid();
+        product.id= ProductManager.id;
         let productsAll = [...productsOld,product];
-        //await fs.writeFile(this.path, JSON.stringify(productsAll));
-        await this.writeProduct(productsAll);
+        await fs.writeFile(this.path, JSON.stringify(productsAll));
+        //await this.writeProduct(productsAll);
         return "Producto Agregado"
 
         // this.products.push(newProduct);
@@ -60,7 +50,10 @@ export default class ProductManager {
     getProductById = async(id)=>{
         
         let product = await this.exist(id);
-        if(!product) console.log(`Producto ${id} no existe`)
+        if(!product) {
+            console.log(`Producto ${id} no existe`)
+            return "Producto no existe"    
+        }
         else {  //console.log(product);
                 return product}
     }
@@ -84,19 +77,21 @@ export default class ProductManager {
         if(deleteProduct) {
             let newProducts = products.filter(el=>el.id != id);
             await fs.writeFile(this.path,JSON.stringify(newProducts));
-            console.log(`Producto ${id} eliminado`)
+            console.log(`Producto ${id} eliminado`);
+            return "Producto eliminado"
         } else{
-            console.log(`Producto ${id} no existe`)
+            console.log(`Producto ${id} no existe para eliminar`);
+            return "Producto no existe para eliminar"
         }
                 
     }
 }
 
-const products = new ProductManager;
+//const products = new ProductManager;
 // products.addProduct('titulo1','description1',1111,'image1',11,1000);
 // products.addProduct('titulo2','description2',2222,'image2',22,2000);
 // products.addProduct('titulo3','description3',3333,'image3',33,3000);
-products.getProducts();
+//products.getProducts();
 //products.getProductById(3); //no existe
 //products.getProductById(2);
 //products.deleteProductByID(2);

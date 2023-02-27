@@ -12,33 +12,22 @@ ProductRouter.post("/", async (req,res)=>{
 })
 
 ProductRouter.get("/",async (req,res)=>{
-    // let limit = parseInt(req.query.limit);
-    // console.log(limit)
-    // if (!limit) return res.send(await readProducts)
-              
     res.send(await product.getProducts());
     
 })
 
 ProductRouter.get("/:id",async (req,res)=>{
-    let id= parseInt(req.params.id)
-    //console.log(id)
-    // let allProducts= await readProducts;
-    // let productById= allProducts.find(product=> product.id === id)
-    // res.send(productById)
-    res.send(await product.getProductById(id));
+    res.send(await product.getProductById(req.params.id));
 })
 
 ProductRouter.delete("/:id",async (req,res)=>{
-    let id= parseInt(req.params.id);
-    res.send(await product.deleteProductByID(id));
+    res.send(await product.deleteProductByID(req.params.id));
 
 })
 
 ProductRouter.put("/:id",async (req,res)=>{
-    let id= parseInt(req.params.id);
-    let updateProduct = req.body;
-    res.send(await product.updateProduct(id,updateProduct));
+    //let updateProduct = req.body;
+    res.send(await product.updateProduct(req.params.id,req.body));
 })
 
 export default ProductRouter;

@@ -15,7 +15,6 @@ export default class CartManager{
 
     readCarts = async ()=>{
         let cart = await fs.readFile(this.path,'utf-8');
-        
         return JSON.parse(cart)
     }
 
@@ -27,38 +26,38 @@ export default class CartManager{
     addCart = async (cart)=>{
         let cartOld = await this.readCarts();
         let id = nanoid();
-        let cartConcat = [{id:id, cart: []}, ...cartOld]
+        let cartConcat = [...cartOld, {id:id, products: []} ]
         await this.writeCarts(cartConcat);
         return "Carrito Agregado"
     }
 
     getCartById = async(id)=>{
         let cart = await this.exist(id);
-        if(!cart) return `Carrito no existe`;
+        if(!cart) return `Carrito ${id} no existe`;
         //console.log(product);
         return cart;
     }
 
     addProductInCart = async(cid,pid)=>{
-        let cartById = await this.exist(id);
-        if(!cartById) return `Carrito no existe`;
+        let cartById = await this.exist(cid);
+        if(!cartById) return `Carrito ${cid} no existe`;
         let productById = product.exist(pid);
-        if(!productById) return `Producto no existe`;
+        if(!productById) return `Producto ${pid} no existe`;
 
         let cartsAll = await this.readCarts();
         let cartFilter = cartsAll.filter(el=>el.id != cid);
 
         if(cartById.products.some(el=>el.id === pid)){
             let moreProductInCart= cartById.products.find(el=>el.id === pid);
-            moreProductInCart.cantidad++;
+            moreProductInCart.quantity++;
             let cartConcat =[cartById, ...cartFilter];
             await this.writeCarts(cartConcat);
-            return "Se aumento en 1 el producto en el carrito";
+            return `Se aumento en 1 el producto ${pid} en el carrito ${cid}`;
         }
         
-        cartById.products.push({id:productById, cantidad: 1});
+        cartById.products.push({id:pid, quantity: 1});
         let cartConcat = [cartById, ...cartFilter];
         await this.writeCarts(cartConcat);
-        return "Producto agregado al carrito";
+        return `Producto ${pid} agregado al carrito ${cid}`;
     }
 }

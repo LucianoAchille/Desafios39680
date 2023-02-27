@@ -24,13 +24,4 @@ CartRouter.post('/:cid/products/:pid', async (req,res)=>{
     
 })
 
-
-
-
-
-
-
-
-
-
 export default CartRouter;
